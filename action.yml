@@ -1,0 +1,13 @@
+name: Setup Postgres + Valgrind
+inputs:
+  postgres-version:
+    description: The Postgres version to use
+    default: 16
+  track-origins:
+    description: Track origins
+    default: no
+runs:
+  using: node20
+  main: index.js
+  post: cleanup.js
+  post-if: failure()
