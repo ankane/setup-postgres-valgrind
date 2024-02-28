@@ -21,5 +21,7 @@ for (const file of files) {
   console.log(file);
   console.log(contents);
 }
+
+spawnSync('sudo', ['chown', process.env['USER'], '/tmp/postgres.log']);
 console.log('/tmp/postgres.log');
 console.log(fs.readFileSync('/tmp/postgres.log', 'utf8'));
