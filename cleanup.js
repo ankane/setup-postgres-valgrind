@@ -16,9 +16,10 @@ if (!fs.existsSync(logDir)) {
 spawnSync('sudo', ['chown', '-R', process.env['USER'], logDir]);
 
 const files = fs.readdirSync(logDir);
-files.push("/tmp/postgres.log");
 for (const file of files) {
   const contents = fs.readFileSync(path.join(logDir, file), 'utf8');
   console.log(file);
   console.log(contents);
 }
+console.log('/tmp/postgres.log');
+console.log(fs.readFileSync('/tmp/postgres.log', 'utf8'));
