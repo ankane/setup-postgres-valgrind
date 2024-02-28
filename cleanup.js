@@ -18,5 +18,6 @@ spawnSync('sudo', ['chown', '-R', process.env['USER'], logDir]);
 const files = fs.readdirSync(logDir);
 for (const file of files) {
   const contents = fs.readFileSync(path.join(logDir, file), 'utf8');
+  console.log(file);
   console.log(contents);
 }
