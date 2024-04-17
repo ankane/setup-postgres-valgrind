@@ -10,6 +10,7 @@ jobs:
           - os: ubuntu-22.04
             postgres-version: 16
             track-origins: no
+            check-ub: yes
     steps:
       - uses: actions/checkout@v4
         with:
@@ -22,6 +23,7 @@ jobs:
         with:
           postgres-version: ${{ matrix.postgres-version }}
           track-origins: ${{ matrix.track-origins }}
+          check-ub: ${{ matrix.check-ub }}
 
       - run: make OPTFLAGS=""
       - run: sudo --preserve-env=PG_CONFIG make install

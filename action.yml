@@ -6,6 +6,8 @@ inputs:
   track-origins:
     description: Track origins
     default: no
+  check-ub:
+    description: Check for undefined behavior (experimental)
 runs:
   using: node20
   main: index.js

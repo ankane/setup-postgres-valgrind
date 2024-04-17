@@ -61,6 +61,11 @@ if (!['yes', 'no'].includes(trackOrigins)) {
   throw `Invalid value for track-origins: ${trackOrigins}`;
 }
 
+const checkUb = process.env['INPUT_CHECK-UB'];
+if (!['yes', 'no'].includes(checkUb)) {
+  throw `Invalid value for check-ub: ${checkUb}`;
+}
+
 step('Installing Valgrind');
 run('sudo', 'apt-get', 'update');
 run('sudo', 'apt-get', 'install', 'libipc-run-perl', 'valgrind');
@@ -74,7 +79,8 @@ run('mv', `postgres-${tag}`, 'postgres')
 
 step('Compiling Postgres (this can take a few minutes)');
 process.chdir('postgres');
-runEnv({'CFLAGS': '-DUSE_VALGRIND'}, './configure', '--enable-cassert', '--enable-debug', '--enable-tap-tests');
+const sanitizeFlags = checkUb == 'yes' ? `-fsanitize=undefined -fno-sanitize-recover=all` : '';
+runEnv({'CFLAGS': `-DUSE_VALGRIND ${sanitizeFlags}`, 'LDFLAGS': sanitizeFlags}, './configure', '--enable-cassert', '--enable-debug', '--enable-tap-tests');
 run('sudo', 'make');
 
 step('Installing Postgres');
@@ -84,6 +90,8 @@ run('sudo', 'chown', 'postgres', dataDir);
 run('sudo', '-u', 'postgres', `${bin}/initdb`, '-D', dataDir);
 
 const script = `#!/bin/sh\n
+
+export UBSAN_OPTIONS=log_path=${logDir}/ubsan
 
 exec valgrind \\
     --quiet \\

@@ -18,7 +18,7 @@ spawnSync('sudo', ['chown', '-R', process.env['USER'], logDir]);
 const files = fs.readdirSync(logDir);
 for (const file of files) {
   const contents = fs.readFileSync(path.join(logDir, file), 'utf8');
-  if (contents.includes('Memcheck')) {
+  if (contents.includes('Memcheck') || file.includes('ubsan.')) {
     console.log(`::error::${escape(contents)}`)
   }
 }
