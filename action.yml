@@ -8,6 +8,7 @@ inputs:
     default: no
   check-ub:
     description: Check for undefined behavior (experimental)
+    default: no
 runs:
   using: node20
   main: index.js
