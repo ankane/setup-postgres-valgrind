@@ -28,4 +28,4 @@ jobs:
       - run: make OPTFLAGS=""
       - run: sudo --preserve-env=PG_CONFIG make install
       - run: make installcheck
-      - run: make prove_installcheck PROVE_TESTS=test/t/015_hnsw_duplicates.pl
+      - run: make prove_installcheck PROVE_TESTS=test/t/015_hnsw_vector_duplicates.pl
