@@ -13,12 +13,19 @@ if (!fs.existsSync(logDir)) {
   process.exit();
 }
 
-spawnSync('sudo', ['chown', '-R', process.env['USER'], logDir]);
+const user = process.env['USER'];
+spawnSync('sudo', ['chown', '-R', user, logDir]);
+spawnSync('sudo', ['chown', user, '/tmp/postgres.log']);
 
 const files = fs.readdirSync(logDir);
 for (const file of files) {
   const contents = fs.readFileSync(path.join(logDir, file), 'utf8');
   if (contents.includes('Memcheck') || file.includes('ubsan.')) {
-    console.log(`::error::${escape(contents)}`)
+    console.log(`::error::${escape(contents)}`);
   }
+}
+
+const contents = fs.readFileSync('/tmp/postgres.log', 'utf8');
+if (contents.includes('TRAP:')) {
+  console.log(`::error::${escape(contents)}`);
 }
