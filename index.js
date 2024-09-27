@@ -2,6 +2,7 @@ const fs = require('fs');
 const spawnSync = require('child_process').spawnSync;
 
 const versionMap = {
+  '17': '17.0',
   '16': '16.1',
   '15': '15.5',
   '14': '14.10',
@@ -52,7 +53,7 @@ if (process.platform != 'linux') {
 }
 
 const postgresVersion = parseFloat(process.env['INPUT_POSTGRES-VERSION']);
-if (![16, 15, 14, 13, 12].includes(postgresVersion)) {
+if (![17, 16, 15, 14, 13, 12].includes(postgresVersion)) {
   throw `Postgres version not supported: ${postgresVersion}`;
 }
 
