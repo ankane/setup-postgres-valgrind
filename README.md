@@ -38,17 +38,17 @@ Specify a Postgres version
 ```yml
       - uses: ankane/setup-postgres-valgrind@v1
         with:
-          postgres-version: 16
+          postgres-version: 17
 ```
 
-Currently supports `16` (default), `15`, `14`, `13`, and `12`
+Currently supports `17` (default), `16`, `15`, `14`, `13`, and `12`
 
 Test against multiple versions
 
 ```yml
     strategy:
       matrix:
-        postgres-version: [16, 15, 14, 13, 12]
+        postgres-version: [17, 16, 15, 14, 13]
     steps:
       - uses: ankane/setup-postgres-valgrind@v1
         with:
