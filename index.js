@@ -69,7 +69,7 @@ if (!['yes', 'no'].includes(checkUb)) {
 
 step('Installing Valgrind');
 run('sudo', 'apt-get', 'update');
-run('sudo', 'apt-get', 'install', 'libipc-run-perl', 'valgrind');
+run('sudo', 'apt-get', 'install', 'libipc-run-perl', 'libreadline-dev', 'valgrind');
 
 step('Downloading Postgres');
 process.chdir('/tmp');
