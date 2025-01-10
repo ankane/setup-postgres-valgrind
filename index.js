@@ -52,7 +52,10 @@ if (process.platform != 'linux') {
   throw `Platform not supported: ${process.platform}`;
 }
 
-const postgresVersion = parseFloat(process.env['INPUT_POSTGRES-VERSION']);
+let postgresVersion = process.env['INPUT_POSTGRES-VERSION'];
+if (postgresVersion != 'devel') {
+  postgresVersion = parseFloat(postgresVersion);
+}
 if (!['devel', 17, 16, 15, 14, 13, 12].includes(postgresVersion)) {
   throw `Postgres version not supported: ${postgresVersion}`;
 }
