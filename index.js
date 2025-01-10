@@ -2,12 +2,12 @@ const fs = require('fs');
 const spawnSync = require('child_process').spawnSync;
 
 const versionMap = {
-  '17': '17.0',
-  '16': '16.1',
-  '15': '15.5',
-  '14': '14.10',
-  '13': '13.13',
-  '12': '12.17'
+  '17': '17.2',
+  '16': '16.6',
+  '15': '15.10',
+  '14': '14.15',
+  '13': '13.18',
+  '12': '12.22'
 };
 
 const bin = '/usr/local/pgsql/bin';
