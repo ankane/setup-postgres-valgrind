@@ -53,7 +53,7 @@ if (process.platform != 'linux') {
 }
 
 const postgresVersion = parseFloat(process.env['INPUT_POSTGRES-VERSION']);
-if (![17, 16, 15, 14, 13, 12].includes(postgresVersion)) {
+if (!['devel', 17, 16, 15, 14, 13, 12].includes(postgresVersion)) {
   throw `Postgres version not supported: ${postgresVersion}`;
 }
 
@@ -73,10 +73,11 @@ run('sudo', 'apt-get', 'install', 'libipc-run-perl', 'libreadline-dev', 'valgrin
 
 step('Downloading Postgres');
 process.chdir('/tmp');
-const tag = `REL_${versionMap[postgresVersion].replace('.', '_')}`;
-run('wget', '-q', `https://github.com/postgres/postgres/archive/refs/tags/${tag}.tar.gz`);
+const tag = postgresVersion == 'devel' ? 'master' : `REL_${versionMap[postgresVersion].replace('.', '_')}`;
+const refType = postgresVersion == 'devel' ? 'heads' : 'tags';
+run('wget', '-q', `https://github.com/postgres/postgres/archive/refs/${refType}/${tag}.tar.gz`);
 run('tar', 'xf', `${tag}.tar.gz`);
-run('mv', `postgres-${tag}`, 'postgres')
+run('mv', `postgres-${tag}`, 'postgres');
 
 step('Compiling Postgres (this can take a few minutes)');
 process.chdir('postgres');
