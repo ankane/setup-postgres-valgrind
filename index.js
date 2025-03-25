@@ -90,6 +90,9 @@ run('sudo', 'make');
 
 step('Installing Postgres');
 run('sudo', 'make', 'install');
+if (process.arch == 'arm64') {
+  run('sudo', 'adduser', 'postgres');
+}
 run('sudo', 'mkdir', '-p', dataDir);
 run('sudo', 'chown', 'postgres', dataDir);
 run('sudo', '-u', 'postgres', `${bin}/initdb`, '-D', dataDir);
