@@ -2,6 +2,7 @@ const fs = require('fs');
 const spawnSync = require('child_process').spawnSync;
 
 const versionMap = {
+  '18': '18.beta2',
   '17': '17.2',
   '16': '16.6',
   '15': '15.10',
@@ -56,7 +57,7 @@ let postgresVersion = process.env['INPUT_POSTGRES-VERSION'];
 if (postgresVersion != 'devel') {
   postgresVersion = parseFloat(postgresVersion);
 }
-if (!['devel', 17, 16, 15, 14, 13, 12].includes(postgresVersion)) {
+if (!['devel', 18, 17, 16, 15, 14, 13, 12].includes(postgresVersion)) {
   throw `Postgres version not supported: ${postgresVersion}`;
 }
 
@@ -76,7 +77,7 @@ run('sudo', 'apt-get', 'install', 'libipc-run-perl', 'libreadline-dev', 'valgrin
 
 step('Downloading Postgres');
 process.chdir('/tmp');
-const tag = postgresVersion == 'devel' ? 'master' : `REL_${versionMap[postgresVersion].replace('.', '_')}`;
+const tag = postgresVersion == 'devel' ? 'master' : `REL_${versionMap[postgresVersion].replace('.', '_').toUpperCase()}`;
 const refType = postgresVersion == 'devel' ? 'heads' : 'tags';
 run('wget', '-q', `https://github.com/postgres/postgres/archive/refs/${refType}/${tag}.tar.gz`);
 run('tar', 'xf', `${tag}.tar.gz`);
