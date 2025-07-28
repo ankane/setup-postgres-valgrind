@@ -41,7 +41,7 @@ Specify a Postgres version
           postgres-version: 17
 ```
 
-Currently supports `17` (default), `16`, `15`, `14`, `13`, and `12`
+Currently supports `18`, `17` (default), `16`, `15`, `14`, `13`, and `12`
 
 Test against multiple versions
 
