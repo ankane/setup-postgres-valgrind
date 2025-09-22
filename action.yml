@@ -10,6 +10,6 @@ inputs:
     description: Check for undefined behavior (experimental)
     default: no
 runs:
-  using: node20
+  using: node24
   main: index.js
   post: cleanup.js

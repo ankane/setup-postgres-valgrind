@@ -12,11 +12,11 @@ jobs:
             track-origins: no
             check-ub: yes
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           repository: pgvector/pgvector
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           path: action
       - uses: ./action
