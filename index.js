@@ -2,7 +2,7 @@ const fs = require('fs');
 const spawnSync = require('child_process').spawnSync;
 
 const versionMap = {
-  '18': '18.rc1',
+  '18': '18.0',
   '17': '17.6',
   '16': '16.10',
   '15': '15.14',
