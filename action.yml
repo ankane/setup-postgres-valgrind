@@ -2,7 +2,7 @@ name: Setup Postgres + Valgrind
 inputs:
   postgres-version:
     description: The Postgres version to use
-    default: 17
+    default: 18
   track-origins:
     description: Track origins
     default: no

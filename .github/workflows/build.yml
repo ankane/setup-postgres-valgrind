@@ -8,7 +8,7 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            postgres-version: 17
+            postgres-version: 18
             track-origins: no
             check-ub: yes
     steps:

@@ -38,10 +38,10 @@ Specify a Postgres version
 ```yml
       - uses: ankane/setup-postgres-valgrind@v1
         with:
-          postgres-version: 17
+          postgres-version: 18
 ```
 
-Currently supports `18`, `17` (default), `16`, `15`, `14`, `13`, and `12`
+Currently supports `18` (default), `17`, `16`, `15`, `14`, `13`, and `12`
 
 Test against multiple versions
 
