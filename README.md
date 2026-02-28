@@ -48,7 +48,7 @@ Test against multiple versions
 ```yml
     strategy:
       matrix:
-        postgres-version: [17, 16, 15, 14, 13]
+        postgres-version: [18, 17, 16, 15, 14]
     steps:
       - uses: ankane/setup-postgres-valgrind@v1
         with:
