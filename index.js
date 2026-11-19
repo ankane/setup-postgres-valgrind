@@ -22,7 +22,8 @@ function runEnv() {
   const command = args.shift();
   const options = {
     encoding: 'utf8',
-    env: Object.assign({}, process.env, env)
+    env: Object.assign({}, process.env, env),
+    maxBuffer: 4 * 1024 * 1024
   };
   // spawn is safer and more lightweight than exec
   const ret = spawnSync(command, args, options);
