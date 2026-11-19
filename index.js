@@ -2,6 +2,7 @@ const fs = require('fs');
 const spawnSync = require('child_process').spawnSync;
 
 const versionMap = {
+  '19': '19.0',
   '18': '18.7',
   '17': '17.12',
   '16': '16.16',
