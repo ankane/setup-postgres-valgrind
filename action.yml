@@ -9,6 +9,9 @@ inputs:
   check-ub:
     description: Check for undefined behavior (experimental)
     default: no
+  asan:
+    description: Use address sanitizer (experimental)
+    default: no
 runs:
   using: node24
   main: index.js

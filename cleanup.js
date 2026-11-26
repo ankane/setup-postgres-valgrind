@@ -20,7 +20,7 @@ spawnSync('sudo', ['chown', user, '/tmp/postgres.log']);
 const files = fs.readdirSync(logDir);
 for (const file of files) {
   const contents = fs.readFileSync(path.join(logDir, file), 'utf8');
-  if (contents.includes('Memcheck') || file.includes('ubsan.')) {
+  if (contents.includes('Memcheck') || file.includes('ubsan.') || file.includes('asan.')) {
     console.log(`::error::${escape(contents)}`);
   }
 }

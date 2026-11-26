@@ -11,6 +11,7 @@ jobs:
             postgres-version: 19
             track-origins: no
             check-ub: yes
+            asan: yes
     steps:
       - uses: actions/checkout@v7
         with:

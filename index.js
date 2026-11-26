@@ -73,9 +73,14 @@ if (!['yes', 'no'].includes(checkUb)) {
   throw `Invalid value for check-ub: ${checkUb}`;
 }
 
-step('Installing Valgrind');
+const asan = process.env['INPUT_ASAN'];
+if (!['yes', 'no'].includes(asan)) {
+  throw `Invalid value for asan: ${asan}`;
+}
+
+step('Installing packages');
 run('sudo', 'apt-get', 'update');
-run('sudo', 'apt-get', 'install', 'libipc-run-perl', 'libreadline-dev', 'valgrind');
+run('sudo', 'apt-get', 'install', 'libipc-run-perl', 'libreadline-dev', ...(asan ? [] : ['valgrind']));
 
 step('Downloading Postgres');
 process.chdir('/tmp');
@@ -87,8 +92,14 @@ run('mv', `postgres-${tag}`, 'postgres');
 
 step('Compiling Postgres (this can take a few minutes)');
 process.chdir('postgres');
-const sanitizeFlags = checkUb == 'yes' ? `-fsanitize=undefined -fno-sanitize-recover=all` : '';
-runEnv({'CFLAGS': `-DUSE_VALGRIND ${sanitizeFlags}`, 'LDFLAGS': sanitizeFlags}, './configure', '--enable-cassert', '--enable-debug', '--enable-tap-tests');
+let sanitizeFlags = '';
+if (asan && checkUb) {
+  sanitizeFlags += '-fsanitize=address,undefined -fno-sanitize-recover=all';
+} else if (checkUb) {
+  sanitizeFlags += '-fsanitize=undefined -fno-sanitize-recover=all';
+}
+
+runEnv({'CFLAGS': asan ? sanitizeFlags : `-DUSE_VALGRIND ${sanitizeFlags}`, 'LDFLAGS': sanitizeFlags}, './configure', '--enable-cassert', '--enable-debug', '--enable-tap-tests');
 run('sudo', 'make');
 
 step('Installing Postgres');
@@ -100,7 +111,7 @@ run('sudo', 'mkdir', '-p', dataDir);
 run('sudo', 'chown', 'postgres', dataDir);
 run('sudo', '-u', 'postgres', `${bin}/initdb`, '-D', dataDir);
 
-const script = `#!/bin/sh\n
+let script = `#!/bin/sh\n
 
 export UBSAN_OPTIONS=log_path=${logDir}/ubsan
 
@@ -115,6 +126,15 @@ exec valgrind \\
     --trace-children=yes \\
     ${bin}/postgres.orig "$@"
 `;
+if (asan) {
+  script = `#!/bin/sh\n
+
+export ASAN_OPTIONS=log_path=${logDir}/asan:detect_invalid_pointer_pairs=2
+export UBSAN_OPTIONS=log_path=${logDir}/ubsan
+
+exec ${bin}/postgres.orig "$@"
+`;
+}
 fs.writeFileSync('/tmp/script', script, {mode: 0o755});
 run('sudo', 'mv', `${bin}/postgres`, `${bin}/postgres.orig`);
 run('sudo', 'mv', '/tmp/script', `${bin}/postgres`);
