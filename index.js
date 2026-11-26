@@ -1,4 +1,5 @@
 const fs = require('fs');
+const os = require('os');
 const spawnSync = require('child_process').spawnSync;
 
 const versionMap = {
@@ -89,7 +90,7 @@ step('Compiling Postgres (this can take a few minutes)');
 process.chdir('postgres');
 const sanitizeFlags = checkUb == 'yes' ? `-fsanitize=undefined -fno-sanitize-recover=all` : '';
 runEnv({'CFLAGS': `-DUSE_VALGRIND ${sanitizeFlags}`, 'LDFLAGS': sanitizeFlags}, './configure', '--enable-cassert', '--enable-debug', '--enable-tap-tests');
-run('sudo', 'make');
+run('sudo', 'make', `-j${os.availableParallelism()}`);
 
 step('Installing Postgres');
 run('sudo', 'make', 'install');
