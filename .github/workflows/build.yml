@@ -27,6 +27,6 @@ jobs:
           check-ub: ${{ matrix.check-ub }}
 
       - run: make OPTFLAGS=""
-      - run: sudo --preserve-env=PG_CONFIG make install
+      - run: sudo --preserve-env=PG_CONFIG,ASAN_OPTIONS make install
       - run: make installcheck
       - run: make prove_installcheck PROVE_TESTS=test/t/015_hnsw_vector_duplicates.pl

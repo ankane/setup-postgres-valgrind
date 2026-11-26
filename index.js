@@ -136,6 +136,7 @@ export UBSAN_OPTIONS=log_path=${logDir}/ubsan
 
 exec ${bin}/postgres.orig "$@"
 `;
+  addToEnv('ASAN_OPTIONS', 'detect_leaks=0');
 }
 fs.writeFileSync('/tmp/script', script, {mode: 0o755});
 run('sudo', 'mv', `${bin}/postgres`, `${bin}/postgres.orig`);
