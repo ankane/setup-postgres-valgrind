@@ -30,6 +30,7 @@ function runEnv() {
   if (ret.status !== 0) {
     console.log(command, args.join(' '));
     console.log(ret.stdout);
+    console.log(ret.stderr);
     throw ret.error;
   }
 }
