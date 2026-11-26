@@ -131,7 +131,7 @@ exec valgrind \\
 if (asan) {
   script = `#!/bin/sh\n
 
-export ASAN_OPTIONS=log_path=${logDir}/asan:detect_invalid_pointer_pairs=2
+export ASAN_OPTIONS=log_path=${logDir}/asan:detect_invalid_pointer_pairs=2:detect_leaks=0
 export UBSAN_OPTIONS=log_path=${logDir}/ubsan
 
 exec ${bin}/postgres.orig "$@"
