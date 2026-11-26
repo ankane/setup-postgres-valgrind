@@ -1,4 +1,5 @@
 const fs = require('fs');
+const os = require('os');
 const spawnSync = require('child_process').spawnSync;
 
 const versionMap = {
@@ -101,7 +102,7 @@ if (asan && checkUb) {
 }
 
 runEnv({'CFLAGS': asan ? sanitizeFlags : `-DUSE_VALGRIND ${sanitizeFlags}`, 'LDFLAGS': sanitizeFlags}, './configure', '--enable-cassert', '--enable-debug', '--enable-tap-tests');
-run('sudo', 'make');
+run('sudo', 'make', `-j${os.availableParallelism()}`);
 
 step('Installing Postgres');
 run('sudo', 'make', 'install');
