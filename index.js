@@ -110,7 +110,7 @@ if (process.arch == 'arm64') {
 }
 run('sudo', 'mkdir', '-p', dataDir);
 run('sudo', 'chown', 'postgres', dataDir);
-run('sudo', '-u', 'postgres', `${bin}/initdb`, '-D', dataDir);
+runEnv(asan ? {'ASAN_OPTIONS': 'detect_leaks=0'} : {}, 'sudo', '-u', 'postgres', `${bin}/initdb`, '-D', dataDir);
 
 let script = `#!/bin/sh\n
 
