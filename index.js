@@ -101,7 +101,7 @@ if (asan) {
 if (checkUb) {
   sanitize.push('undefined');
 }
-const sanitizeFlags = sanitize.length == 0 ? `` : `-fsanitize=${sanitize.join(',')} -fsanitize-recover=address`; // -fno-sanitize-recover=all`;
+const sanitizeFlags = sanitize.length == 0 ? `` : `-fsanitize=${sanitize.join(',')} -fno-sanitize-recover=all`;
 
 runEnv({'CFLAGS': asan ? sanitizeFlags : `-DUSE_VALGRIND ${sanitizeFlags}`, 'LDFLAGS': sanitizeFlags}, './configure', '--enable-cassert', '--enable-debug', '--enable-tap-tests');
 run('sudo', 'make', `-j${os.availableParallelism()}`);
@@ -133,12 +133,12 @@ exec valgrind \\
 if (asan) {
   script = `#!/bin/sh\n
 
-export ASAN_OPTIONS=log_path=${logDir}/asan:detect_invalid_pointer_pairs=2:detect_leaks=0:halt_on_error=0
+export ASAN_OPTIONS=log_path=${logDir}/asan:detect_invalid_pointer_pairs=2:detect_leaks=0
 export UBSAN_OPTIONS=log_path=${logDir}/ubsan
 
 exec ${bin}/postgres.orig "$@"
 `;
-  addToEnv(`ASAN_OPTIONS=log_path=${logDir}/asan:detect_invalid_pointer_pairs=2:detect_leaks=0:halt_on_error=0`);
+  addToEnv(`ASAN_OPTIONS=log_path=${logDir}/asan:detect_invalid_pointer_pairs=2:detect_leaks=0`);
 }
 fs.writeFileSync('/tmp/script', script, {mode: 0o755});
 run('sudo', 'mv', `${bin}/postgres`, `${bin}/postgres.orig`);
