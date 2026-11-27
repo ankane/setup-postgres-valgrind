@@ -12,6 +12,7 @@ jobs:
             # track-origins: no
             # check-ub: yes
             asan: yes
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v7
         with:
