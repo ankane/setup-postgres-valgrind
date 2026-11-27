@@ -101,7 +101,7 @@ if (asan) {
 if (checkUb) {
   sanitize.push('undefined');
 }
-const sanitizeFlags = sanitize.length == 0 ? `` : `-fsanitize=${sanitize.join(',')}`; // -fno-sanitize-recover=all`;
+const sanitizeFlags = sanitize.length == 0 ? `` : `-fsanitize=${sanitize.join(',')} -fsanitize-recover=address`; // -fno-sanitize-recover=all`;
 
 runEnv({'CFLAGS': asan ? sanitizeFlags : `-DUSE_VALGRIND ${sanitizeFlags}`, 'LDFLAGS': sanitizeFlags}, './configure', '--enable-cassert', '--enable-debug', '--enable-tap-tests');
 run('sudo', 'make', `-j${os.availableParallelism()}`);
