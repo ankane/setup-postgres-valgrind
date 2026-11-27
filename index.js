@@ -94,12 +94,14 @@ run('mv', `postgres-${tag}`, 'postgres');
 
 step('Compiling Postgres (this can take a few minutes)');
 process.chdir('postgres');
-let sanitizeFlags = '';
-if (asan && checkUb) {
-  sanitizeFlags += '-fsanitize=address,undefined -fno-sanitize-recover=all';
-} else if (checkUb) {
-  sanitizeFlags += '-fsanitize=undefined -fno-sanitize-recover=all';
+const sanitize = [];
+if (asan) {
+  sanitize.push('address', 'pointer-compare', 'pointer-subtract');
 }
+if (checkUb) {
+  sanitize.push('undefined');
+}
+const sanitizeFlags = sanitize.length == 0 ? '' : sanitize.join(',');
 
 runEnv({'CFLAGS': asan ? sanitizeFlags : `-DUSE_VALGRIND ${sanitizeFlags}`, 'LDFLAGS': sanitizeFlags}, './configure', '--enable-cassert', '--enable-debug', '--enable-tap-tests');
 run('sudo', 'make', `-j${os.availableParallelism()}`);
