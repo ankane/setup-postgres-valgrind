@@ -24,8 +24,9 @@ jobs:
       - uses: ./action
         with:
           postgres-version: ${{ matrix.postgres-version }}
-          track-origins: ${{ matrix.track-origins }}
-          check-ub: ${{ matrix.check-ub }}
+          # track-origins: ${{ matrix.track-origins }}
+          # check-ub: ${{ matrix.check-ub }}
+          asan: ${{ matrix.asan }}
 
       - run: make OPTFLAGS=""
       - run: sudo --preserve-env=PG_CONFIG,ASAN_OPTIONS make install
